@@ -271,6 +271,46 @@ Route::get('/', function (Request $request) {
         return $result;
 });
 
+Route::post('/first', function (Request $request) {
+    $client = new \GuzzleHttp\Client();
+    $jar = new \GuzzleHttp\Cookie\CookieJar();
+
+    $base = 'https://ai.12348.gov.cn';
+
+    $res = $client->request('POST', $base . $request->get('url') . '?action_type=ajax', [
+        'headers' => [
+            'Accept' => '*/*',
+            'X-Requested-With' => 'XMLHttpRequest',
+            'Referer' => $base . $request->get('url') . '?',
+            'Origin' => $base,
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+        ],
+        'cookies' => $jar,
+    ]);
+
+    $res = $client->request('POST', $base . $request->get('url') . '?action_type=ajax', [
+        'headers' => [
+            'Accept' => '*/*',
+            'Accept' => '*/*',
+            'X-Requested-With' => 'XMLHttpRequest',
+            'Referer' => $base . $request->get('url') . '?',
+            'Origin' => $base,
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+            'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8',
+        ],
+        'cookies' => $jar,
+    ]);
+
+    $body = $res->getBody();
+
+    $output = json_decode($body, true);
+
+    return [
+        'data' => $output['c'],
+        'cookie' => $jar->toArray(),
+    ];
+});
+
 });
 
 Route::get('/getData', function (Request $request) {
