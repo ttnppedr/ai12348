@@ -245,21 +245,32 @@ Route::get('/', function (Request $request) {
             ]
         ];
 
+        $result = '';
         foreach ($catas as $cata) {
-            echo '<p>';
+            $result .= '<p>';
             if (isset($cata['sub'])) {
-                echo $cata['title'];
-                echo '<br>';
+                $result .= $cata['title'];
+                $result .= '<br>';
                 foreach ($cata['sub'] as $sub) {
-                    echo '<a href="' . $sub['link'] . '">' . $sub['title'] . '</a>';
-                    echo '<br>';
+                    $result .= '<form method="POST" action="first-action">';
+                    $result .= '<input value="' . $sub['link'] .'" type="hidden">';
+                    $result .= '<a href="" onclick="form.submit();">' . $sub['title'] . '</a>';
+                    $result .= '<br>';
+                    $result .= '</form>';
                 }
             } else {
-                echo '<a href="' . $cata['link'] . '">' . $cata['title'] . '</a>';
-                echo '<br>';
+                $result .= '<form method="POST" action="first-action">';
+                $result .= '<input value="' . $cata['link'] .'" type="hidden">';
+                $result .= '<a href="" onclick="form.submit();">' . $cata['title'] . '</a>';
+                $result .= '<br>';
+                    $result .= '</form>';
             }
-            echo '</p>';
+            $result .= '</p>';
         }
+
+        return $result;
+});
+
 });
 
 Route::get('/getData', function (Request $request) {
