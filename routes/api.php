@@ -363,8 +363,8 @@ Route::post('/last', function (Request $request) {
     $base = 'https://ai.12348.gov.cn';
 
     $res = $client->request('POST', $base . $request->get('url') . '?action_type=ajax', [
-        // 'form_params' => array('action'=>'more_info', 'username'=>'PC用户', 'tell'=>'13000000000'),
-        'form_params' => $request->get('data'),
+        'form_params' => array('action'=>'more_info', 'username'=>'PC用户', 'tell'=>'13000000000'),
+        // 'form_params' => $request->get('data'),
         'headers' => [
             'Accept' => '*/*',
             'X-Requested-With' => 'XMLHttpRequest',
