@@ -317,10 +317,25 @@ Route::post('/send', function (Request $request) {
 
     $base = 'https://ai.12348.gov.cn';
 
+    $body = '';
+    $data = $request->get('data');
+    if (is_array($request->get('data')['item'])) {
+        foreach ($request->get('data')['item'] as $item) {
+            $body .= 'item[]=' . $item . '&';
+        }
+    } else {
+        $body .= 'item=' . $request->get('data')['item'] . '&';
+    }
+    if (isset($request->get('data')['other'])) {
+        foreach ($request->get('data')['other'] as $k => $v) {
+            $body .= $k . '=' . $v . '&';
+        }
+    }
+    $body .= 'action=' . $request->get('data')['action'];
+
     $res = $client->request('POST', $base . $request->get('url') . '?action_type=ajax', [
-        'form_params' => $request->get('data'),
+        'body' => $body,
         'headers' => [
-            'Accept' => '*/*',
             'Accept' => '*/*',
             'X-Requested-With' => 'XMLHttpRequest',
             'Referer' => $base . $request->get('url') . '?',
