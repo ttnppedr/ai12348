@@ -383,6 +383,25 @@ Route::post('/last', function (Request $request) {
     return $output['url'];
 });
 
+Route::post('/location', function (Request $request) {
+    $client = new \GuzzleHttp\Client();
+
+    $base = 'https://ai.12348.gov.cn';
+
+    $res = $client->request('GET', $base . $request->get('url') . '?' . http_build_query($request->get('data')), [
+        'headers' => [
+            'Accept' => 'application/json, text/javascript, */*; q=0.01',
+            'X-Requested-With' => 'XMLHttpRequest',
+            'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36',
+            'Authority' => 'ai.12348.gov.cn',
+            'Accept-encoding' => 'gzip, deflate, br',
+            'Accept-language' => 'en-US,en;q=0.9,zh-TW;q=0.8,zh;q=0.7',
+        ],
+    ]);
+
+    return $res->getBody();
+});
+
 Route::get('/getData', function (Request $request) {
     $client = new \GuzzleHttp\Client();
     $jar = new \GuzzleHttp\Cookie\CookieJar();
